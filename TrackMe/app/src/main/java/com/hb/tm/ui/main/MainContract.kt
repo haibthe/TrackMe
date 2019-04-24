@@ -8,4 +8,8 @@ interface MainContract {
     interface Presenter {
 
     }
+
+    companion object {
+        const val REQUEST_TRACKING = 10000
+    }
 }

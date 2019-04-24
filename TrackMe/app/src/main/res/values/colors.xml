@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorPrimaryDark">#2196F3</color>
+    <color name="colorAccent">#2196F3</color>
 
     <color name="white">#fff</color>
     <color name="black">#000</color>
+
+    <color name="red">#B50A00</color>
+
+    <color name="mapboxGreen">#8BC34A</color>
+
+    <color name="line_tracking">#e55e5e</color>
+    <color name="raw">#8a8acb</color>
 </resources>

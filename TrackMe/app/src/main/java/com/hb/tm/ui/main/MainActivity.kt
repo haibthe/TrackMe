@@ -1,6 +1,7 @@
 package com.hb.tm.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
+import butterknife.OnClick
 import com.hb.lib.mvp.impl.lce.sr.HBMvpLceSRActivity
 import com.hb.tm.R
 import com.hb.tm.data.DataManager
@@ -20,7 +22,7 @@ import com.hb.uiwidget.recyclerview.OnItemClickListener
 class MainActivity : HBMvpLceSRActivity<List<DataWrapper<*>>, MainPresenter>(), MainContract.View {
 
     override fun getResLayoutId(): Int {
-        return R.layout.activity_lce_sr_search
+        return R.layout.activity_main
     }
 
     @BindView(R.id.toolbar)
@@ -29,6 +31,22 @@ class MainActivity : HBMvpLceSRActivity<List<DataWrapper<*>>, MainPresenter>(), 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
+    }
+
+    @OnClick(R.id.fab_tracking)
+    fun onTracking() {
+        Navigator.startTracking(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            MainContract.REQUEST_TRACKING -> {
+
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
 
     }
 

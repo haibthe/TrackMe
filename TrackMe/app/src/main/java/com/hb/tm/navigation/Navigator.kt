@@ -6,6 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import com.hb.tm.ui.detail.DetailActivity
 import com.hb.tm.ui.main.MainActivity
+import com.hb.tm.ui.main.MainContract
+import com.hb.tm.ui.tracking.TrackingActivity
 
 
 object Navigator {
@@ -34,5 +36,9 @@ object Navigator {
         activity.startActivity(intent)
     }
 
+    fun startTracking(activity: Activity) {
+        val intent = Intent(activity, TrackingActivity::class.java)
+        activity.startActivityForResult(intent, MainContract.REQUEST_TRACKING)
+    }
 
 }

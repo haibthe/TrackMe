@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">StackOverflow</string>
+    <string name="app_name">TrackMe</string>
 
     <string name="title_logo"></string>
     <string name="title_copyright">© 2019 Bản quyền của HB</string>
+
+    <string name="local_service_started">Tracking</string>
+
 </resources>

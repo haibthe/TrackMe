@@ -3,11 +3,13 @@ package com.hb.tm.app;
 
 import com.hb.lib.app.HBMvpApp;
 import com.hb.tm.BuildConfig;
+import com.hb.tm.R;
 import com.hb.tm.di.component.AppComponent;
 import com.hb.tm.di.component.DaggerAppComponent;
 import com.hb.tm.di.module.AppModule;
 import com.hb.tm.utils.image.GlideImageHelper;
 import com.hb.tm.utils.image.ImageHelper;
+import com.mapbox.mapboxsdk.Mapbox;
 import timber.log.Timber;
 
 public class App extends HBMvpApp {
@@ -30,6 +32,9 @@ public class App extends HBMvpApp {
         initAllComponent();
 
         imageHelper = new GlideImageHelper(getBaseContext());
+
+        String mapboxToken = getString(R.string.map_token);
+        Mapbox.getInstance(getApplicationContext(), mapboxToken);
     }
 
     public void initAllComponent() {

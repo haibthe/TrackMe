@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:name="com.hb.tm.app.App"
@@ -16,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <service android:name=".ui.tracking.service.LocalService"/>
 
         <activity
             android:name="com.hb.tm.ui.splash.SplashActivity"
@@ -27,8 +33,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.hb.tm.ui.main.MainActivity" />
-        <activity android:name="com.hb.tm.ui.detail.DetailActivity" />
+        <activity
+            android:name="com.hb.tm.ui.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.hb.tm.ui.detail.DetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.tracking.TrackingActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
