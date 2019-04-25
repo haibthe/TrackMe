@@ -4,10 +4,11 @@ import android.view.View
 import android.widget.TextView
 import butterknife.BindView
 import com.hb.tm.R
+import com.hb.tm.data.entity.TrackingInfo
 import com.hb.uiwidget.recyclerview.BaseViewHolder
 import java.util.*
 
-class TrackingInfoViewHolder(itemView: View) : BaseViewHolder<Any>(itemView) {
+open class TrackingInfoViewHolder(itemView: View) : BaseViewHolder<TrackingInfo>(itemView) {
 
     @BindView(R.id.tv_distance)
     lateinit var distance: TextView
@@ -16,7 +17,7 @@ class TrackingInfoViewHolder(itemView: View) : BaseViewHolder<Any>(itemView) {
     @BindView(R.id.tv_time)
     lateinit var time: TextView
 
-    override fun bindData(data: Any) {
+    override fun bindData(data: TrackingInfo) {
     }
 
     fun updateDuration(duration: Int) {

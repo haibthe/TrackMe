@@ -4,7 +4,6 @@ import com.hb.lib.mvp.impl.lce.HBMvpLcePresenter
 import com.hb.tm.data.repository.SystemRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainPresenter
@@ -18,8 +17,13 @@ class MainPresenter
             getView().showLoading(pullToRefresh)
         }
 
-        val dis = systemRepository.getDataTest()
-            .delay(2000, TimeUnit.MILLISECONDS)
+        val dis = systemRepository.getAllTrackings()
+            .map {
+                it.forEach { ti ->
+                    ti.generateImagePath(getView())
+                }
+                it
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

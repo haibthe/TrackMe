@@ -6,4 +6,6 @@
 
     <string name="local_service_started">Tracking</string>
 
+    <string name="map_static">https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-a+9ed4bd({{START_POINT}}),pin-s-b+000({{END_POINT}}),path-5+f44-0.5({{PATH_ROUTE}})/auto/800x450?access_token={{TOKEN_MAP}}</string>
+
 </resources>

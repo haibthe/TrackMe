@@ -9,6 +9,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import com.hb.tm.R
 import com.hb.tm.ui.tracking.TrackingActivity
 import com.mapbox.mapboxsdk.maps.MapboxMap
@@ -55,6 +56,10 @@ class LocalService : Service() {
         startLocationUpdates()
     }
 
+    @SuppressLint("MissingPermission")
+    fun getLocation(): Task<Location> {
+        return fusedLocationClient.lastLocation
+    }
 
     override fun onCreate() {
         super.onCreate()

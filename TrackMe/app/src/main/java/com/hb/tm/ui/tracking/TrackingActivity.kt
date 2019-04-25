@@ -1,6 +1,7 @@
 package com.hb.tm.ui.tracking
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -132,7 +133,7 @@ class TrackingActivity : HBMvpActivity<TrackingPresenter>(), TrackingContract.Vi
             uiSettings.isLogoEnabled = false
             uiSettings.isAttributionEnabled = false
 
-            val styleUrl = "https://images.vietbando.com/Style/vt_vbddefault/${getToken()}"
+            val styleUrl = "https://images.vietbando.com/Style/vt_vbddefault/${getVBDToken()}"
             mMapboxMap.setStyle(styleUrl) { style ->
                 mStyle = style
                 enableLocationComponent(style)
@@ -161,14 +162,13 @@ class TrackingActivity : HBMvpActivity<TrackingPresenter>(), TrackingContract.Vi
     @SuppressLint("MissingPermission")
     @OnClick(R.id.fab_location)
     fun onLocation() {
-        val location = mMapboxMap.locationComponent.lastKnownLocation ?: return
+        if (mBoundService == null)
+            return
+        mBoundService!!.getLocation()
+            .addOnSuccessListener { location ->
+                mMapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location), 17.0), 500)
+            }
 
-        mMapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location), 17.0), 500)
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun getLocation(): Location? {
-        return mMapboxMap.locationComponent.lastKnownLocation
     }
 
     companion object {
@@ -332,20 +332,32 @@ class TrackingActivity : HBMvpActivity<TrackingPresenter>(), TrackingContract.Vi
     @OnClick(R.id.image_view_stop)
     fun onTrackingStop() {
 
-        startSnapShot(
-            mMapboxMap.projection.visibleRegion.latLngBounds,
-            mMapView.measuredHeight,
-            mMapView.measuredWidth
-        )
+        mPresenter.saveTracking()
 
+//        startSnapShot(
+//            mMapboxMap.projection.visibleRegion.latLngBounds,
+//            1000,
+//            1000
+//        )
+    }
 
+    private var dialog: ProgressDialog? = null
+    override fun showLoading() {
+        dialog = ProgressDialog.show(this, null, "Loading")
+    }
+
+    override fun hideLoading() {
+        dialog?.dismiss()
+        dialog = null
     }
 
     override fun saveCompleted() {
+        hideLoading()
         finish()
     }
 
     override fun saveFailed(error: String) {
+        hideLoading()
         showErrorDialog(error, View.OnClickListener {
 
         })
@@ -363,7 +375,7 @@ class TrackingActivity : HBMvpActivity<TrackingPresenter>(), TrackingContract.Vi
         mTrackingInfoViewHolder.updateSpeed(speed)
     }
 
-    private fun getToken(): String {
+    private fun getVBDToken(): String {
         return getString(R.string.vbd_token)
     }
 
@@ -412,7 +424,6 @@ class TrackingActivity : HBMvpActivity<TrackingPresenter>(), TrackingContract.Vi
         mMapView.onSaveInstanceState(outState)
     }
 
-
     private var mapSnapshotter: MapSnapshotter? = null
 
     private fun startSnapShot(latLngBounds: LatLngBounds, width: Int, height: Int) {
@@ -436,12 +447,21 @@ class TrackingActivity : HBMvpActivity<TrackingPresenter>(), TrackingContract.Vi
         }
 
         mapSnapshotter!!.start { snapshot ->
-            val bitmapOfMapSnapshotImage = snapshot.bitmap
-            val bmpUri = getLocalBitmapUri(bitmapOfMapSnapshotImage)
-
-            mPresenter.saveTracking()
+            saveTracking(snapshot.bitmap)
         }
     }
+
+    private fun saveTracking(bitmap: Bitmap) {
+        val bitmapOfMapSnapshotImage = bitmap
+        val bmpUri = getLocalBitmapUri(bitmapOfMapSnapshotImage)
+
+        if (bmpUri != null) {
+//            mPresenter.saveTracking(bmpUri.path!!)
+        } else {
+            showToast("No snapshot map")
+        }
+    }
+
 
     private fun getLocalBitmapUri(bmp: Bitmap): Uri? {
         var bmpUri: Uri? = null

@@ -25,7 +25,9 @@
     <include
         layout="@layout/view_lce_swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -35,8 +37,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="16dp"
+        android:visibility="gone"
         app:elevation="@dimen/fab_elevation"
         app:srcCompat="@drawable/ic_record_24dp"
         app:tint="@color/red" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:elevation="4dp"
+        app:itemIconTint="@drawable/bottom_navigation_main"
+        app:itemTextColor="@drawable/bottom_navigation_main"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_navigation_main" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

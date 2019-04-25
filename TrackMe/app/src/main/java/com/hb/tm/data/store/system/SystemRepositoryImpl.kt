@@ -2,8 +2,11 @@ package com.hb.tm.data.store.system
 
 
 import com.hb.tm.data.entity.DataWrapper
+import com.hb.tm.data.entity.TrackingInfo
 import com.hb.tm.data.repository.SystemRepository
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Created by buihai on 9/9/17.
@@ -44,5 +47,13 @@ class SystemRepositoryImpl(
                     }
                 }
             }
+    }
+
+    override fun insertTracking(data: TrackingInfo): Completable {
+        return storage.insertTracking(data)
+    }
+
+    override fun getAllTrackings(): Single<List<TrackingInfo>> {
+        return storage.getAllTrackingInfo()
     }
 }

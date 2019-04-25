@@ -8,6 +8,8 @@ import com.hb.lib.utils.RxBus
 import com.hb.tm.data.AppDataManager
 import com.hb.tm.data.cache.AppCache
 import com.hb.tm.data.cache.ICache
+import com.hb.tm.data.database.AppDAO
+import com.hb.tm.data.database.AppDatabase
 import com.hb.tm.data.pref.AppPreferenceHelper
 import com.hb.tm.data.pref.PreferenceHelper
 import dagger.Module
@@ -46,9 +48,15 @@ class AppModule(val app: Application) {
 
     @Singleton
     @Provides
-    fun providesDataManager(context: Context, preferenceHelper: PreferenceHelper, cache: ICache): IDataManager =
-        AppDataManager(context, preferenceHelper, cache)
+    fun providesDataManager(context: Context, preferenceHelper: PreferenceHelper, cache: ICache, appDAO: AppDAO): IDataManager =
+        AppDataManager(context, preferenceHelper, cache, appDAO)
 
 
+    @Singleton
+    @Provides
+    fun provideDAO(context: Context): AppDAO {
+        val dbs = AppDatabase.getInstance(context)
+        return dbs.appDAO()
+    }
 
 }

@@ -13,4 +13,6 @@
 
     <color name="line_tracking">#e55e5e</color>
     <color name="raw">#8a8acb</color>
+
+    <color name="grey">#767676</color>
 </resources>

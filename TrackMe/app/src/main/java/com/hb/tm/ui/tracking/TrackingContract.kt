@@ -8,6 +8,10 @@ interface TrackingContract {
 
         fun saveCompleted()
 
+        fun showLoading()
+
+        fun hideLoading()
+
         fun saveFailed(error: String)
 
         fun updatePath(path: List<Point>)
@@ -20,8 +24,6 @@ interface TrackingContract {
 
         fun updateDuration(duration: Int)
 
-
-        fun getLocation(): Location?
     }
 
     interface Presenter {

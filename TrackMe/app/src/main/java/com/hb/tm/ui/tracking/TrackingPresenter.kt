@@ -2,8 +2,10 @@ package com.hb.tm.ui.tracking
 
 import android.location.Location
 import com.hb.lib.mvp.impl.HBMvpPresenter
+import com.hb.tm.data.entity.TrackingInfo
 import com.hb.tm.data.repository.SystemRepository
 import com.mapbox.geojson.Point
+import com.mapbox.geojson.utils.PolylineUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -48,10 +50,37 @@ class TrackingPresenter
 
     override fun saveTracking() {
 
+        val pathEncode = PolylineUtils.encode(mPath, 5)
+        val data = TrackingInfo(
+            createDate = System.currentTimeMillis(),
+            distance = mDistance,
+            avgSpeed = mAvgSpeed / mPath.size,
+            duration = mDuration,
+            path = pathEncode
+        )
+
+        data.generateImagePath(getView())
 
         if (isViewAttached()) {
-            getView().saveCompleted()
+            getView().showLoading()
         }
+
+        disposable.add(
+            repository.insertTracking(data)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (isViewAttached()) {
+                        getView().saveCompleted()
+                    }
+                }, {
+                    if (isViewAttached()) {
+                        getView().saveFailed(it.localizedMessage)
+                    }
+                })
+        )
+
+
     }
 
     override fun startTracking() {
@@ -62,8 +91,6 @@ class TrackingPresenter
     private fun runDuration() {
         if (!isTracking)
             return
-        val location = if (isViewAttached()) getView().getLocation() else null
-        if (location != null) tracking(location)
 
         disposable.add(
             Observable.just(mDuration++)
@@ -89,12 +116,10 @@ class TrackingPresenter
         if (!isTracking) {
             return
         }
+//        if (location.speed <= 0)
+//            return
         if (mCurLocation != null) {
             val dis = mCurLocation!!.distanceTo(location)
-            Timber.d("Distance: $dis m")
-            if (dis < DELTA_DISTANCE) {
-                return
-            }
             mDistance += dis
         }
 
